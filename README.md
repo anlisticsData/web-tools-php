@@ -1,6 +1,6 @@
 # 📦 Web Tools — PHP
 
-Uma coleção de **ferramentas web em PHP** para facilitar **uploads de arquivos, requisições HTTP, CORS, respostas JSON e utilitários comuns** usados em aplicações web e APIs.
+Uma coleção de **ferramentas web em PHP** para facilitar **uploads de arquivos, requisições HTTP, CORS, respostas JSON/XML e utilitários comuns** usados em aplicações web e APIs.
 
 ---
 
@@ -12,6 +12,7 @@ O **Web Tools** é um pacote PHP modular e extensível, criado para agilizar tar
 - 🌐 Manipulação de requisições HTTP  
 - 🔐 Configuração simples de CORS  
 - 📤 Respostas JSON padronizadas  
+- 📄 Respostas XML padronizadas  
 - 🧰 Utilitários reutilizáveis  
 - 📦 Integração simples via Composer  
 
@@ -46,17 +47,7 @@ Classe responsável por **fazer upload de arquivos**, validando extensão e tama
 
 ---
 
-## 🎯 Objetivo
-
-- ✅ Validar extensões permitidas  
-- 📏 Limitar tamanho máximo do arquivo  
-- 📂 Criar pastas automaticamente por extensão  
-- 🔐 Evitar sobrescrita de arquivos  
-- 📄 Trabalhar diretamente com `$_FILES`
-
----
-
-## 🧪 Exemplo de Upload
+## 🧪 Exemplo — Upload
 
 ```html
 <form action="upload.php" method="post" enctype="multipart/form-data">
@@ -69,13 +60,7 @@ Classe responsável por **fazer upload de arquivos**, validando extensão e tama
 
 # 🌐 HTTP Request
 
-Classe utilitária para **unificar dados de requisições HTTP**, suportando:
-
-- GET
-- POST
-- JSON (`php://input`)
-
-Todos os parâmetros são normalizados para **lowercase**.
+Classe utilitária para **unificar dados de requisições HTTP**, suportando GET, POST e JSON.
 
 ---
 
@@ -88,8 +73,8 @@ use WebTools\Http\Request;
 
 Request::init();
 
-$id    = Request::get('id');
-$name  = Request::get('name', 'Usuário');
+$id   = Request::get('id');
+$name = Request::get('name', 'Usuário');
 ```
 
 ---
@@ -97,11 +82,6 @@ $name  = Request::get('name', 'Usuário');
 # 🔐 CORS
 
 Classe simples para habilitar **CORS (Cross-Origin Resource Sharing)** em APIs PHP.
-
-Ideal para:
-- APIs REST
-- Frontends SPA (React, Vue, Angular)
-- Integrações externas
 
 ---
 
@@ -113,48 +93,32 @@ Ideal para:
 use WebTools\Http\Cors;
 
 Cors::Init();
-
-// Continuação da API
 ```
-
-### Headers aplicados
-- `Access-Control-Allow-Origin: *`
-- `Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS`
-- `Access-Control-Allow-Headers: Content-Type, Authorization`
-
-Requisições `OPTIONS` retornam **204** automaticamente.
 
 ---
 
 # 📤 JSON Output
 
-Classe utilitária para **retornar respostas JSON padronizadas**, definindo status HTTP e tratando erros.
-
-Ideal para APIs REST.
+Classe utilitária para **retornar respostas JSON padronizadas**, com status HTTP e tratamento de erros.
 
 ---
 
-## 🧪 Exemplo — Resposta de Sucesso
+## 🧪 Exemplo — JSON Sucesso
 
 ```php
 <?php
 
 use WebTools\Output\Json;
 
-$data = [
+Json::show([
     'status' => 'success',
-    'data'   => [
-        'id' => 1,
-        'name' => 'João'
-    ]
-];
-
-Json::show($data, 200);
+    'data' => ['id' => 1, 'name' => 'João']
+], 200);
 ```
 
 ---
 
-## ❌ Exemplo — Resposta de Erro
+## ❌ Exemplo — JSON Erro
 
 ```php
 <?php
@@ -164,14 +128,50 @@ use WebTools\Output\Json;
 Json::show(null, 404, 'Recurso não encontrado');
 ```
 
-### Estrutura de erro retornada
-```json
-{
-  "error": {
-    "message": "Recurso não encontrado",
-    "code": 404
-  }
-}
+---
+
+# 📄 XML Output
+
+Classe utilitária para **retornar respostas XML padronizadas**, ideal para integrações legadas e sistemas externos.
+
+---
+
+## 🧪 Exemplo — XML Sucesso
+
+```php
+<?php
+
+use WebTools\Output\Xml;
+
+Xml::show([
+    'status' => 'success',
+    'data' => [
+        'id' => 1,
+        'name' => 'João'
+    ]
+], 200);
+```
+
+---
+
+## ❌ Exemplo — XML Erro
+
+```php
+<?php
+
+use WebTools\Output\Xml;
+
+Xml::show(null, 400, 'Parâmetros inválidos');
+```
+
+### Exemplo de resposta XML
+```xml
+<response>
+  <error>
+    <message>Parâmetros inválidos</message>
+    <code>400</code>
+  </error>
+</response>
 ```
 
 ---
@@ -180,19 +180,20 @@ Json::show(null, 404, 'Recurso não encontrado');
 
 - 📦 Autoload PSR-4  
 - 📁 Upload organizado por extensão  
-- 🌐 Request unificada (GET, POST, JSON)  
+- 🌐 Request unificada  
 - 🔐 CORS pronto para APIs  
-- 📤 JSON padronizado com status HTTP  
+- 📤 JSON Output  
+- 📄 XML Output  
 - 🧩 Código limpo e orientado a objetos  
 
 ---
 
 ## 🔮 Roadmap
 
-- 🌐 HTTP Client (GET, POST, PUT, DELETE)  
+- 🌐 HTTP Client  
 - 📡 API Request Wrapper  
 - 🛡️ Validação de dados  
-- 🧾 Logger simples  
+- 🧾 Logger  
 - 📁 Download Manager  
 
 ---
