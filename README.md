@@ -1,59 +1,76 @@
-# web-tools-php
-Pacote de libs para Php , como Request , uploads ...
+# 📦 Web Tools — PHP
 
+Uma coleção de **ferramentas web em PHP** para facilitar **uploads de arquivos, requisições HTTP e utilitários comuns** usados em aplicações web e scripts.
 
-# 📦 Web Tools
-
-Uma coleção de ferramentas web em PHP para facilitar requisições HTTP, automações e utilitários.
+---
 
 ## 🧠 Visão Geral
 
-Este pacote fornece funcionalidades para trabalhar com requisições HTTP e outros utilitários que podem ser usados em aplicações web ou scripts.
+O **Web Tools** é um pacote PHP modular e extensível, criado para agilizar tarefas comuns no desenvolvimento web, oferecendo:
 
-O projeto usa **PSR-4 autoloading** para organizar o código e permite fácil integração com outras bibliotecas PHP.
+- 📁 Upload de arquivos seguro e organizado  
+- 📡 Ferramentas para requisições HTTP  
+- 🧰 Utilitários reutilizáveis  
+- 📦 Integração simples via Composer  
+
+O projeto utiliza **autoload PSR-4**, garantindo organização, compatibilidade e fácil manutenção.
 
 ---
 
 ## 🚀 Requisitos
 
-- PHP 7.0 ou superior
+- PHP **7.0 ou superior**
 - Composer
 
 ---
 
 ## 📥 Instalação
 
-Se o pacote estiver publicado no **Packagist**, você pode instalar via Composer:
-
+### Via Packagist
 ```bash
 composer require edilsonclaudino/web-tools
+```
 
+### Ambiente local / desenvolvimento
+```bash
+composer install
+```
 
+---
 
+# 📁 Upload Class
 
-
-# 📁 Upload Class — WebTools
-
-Uma classe PHP para **fazer upload de arquivos** de forma organizada, salvando cada arquivo em uma **pasta separada por extensão** (ex.: `uploads/jpg`, `uploads/pdf`, etc).
+Classe responsável por **fazer upload de arquivos**, validando extensão e tamanho, criando diretórios automaticamente e evitando conflitos de nomes.
 
 ---
 
 ## 🎯 Objetivo
 
-Esta classe facilita o upload de arquivos em aplicações PHP, validando extensão e tamanho, criando diretórios automaticamente por extensão e renomeando os arquivos para evitar conflitos.
-
-O formulário e o script recebem o arquivo usando `$_FILES`, a mesma estrutura usada pelos uploads em PHP. :contentReference[oaicite:0]{index=0}
+- ✅ Validar extensões permitidas  
+- 📏 Limitar tamanho máximo do arquivo  
+- 📂 Criar pastas automaticamente por extensão  
+- 🔐 Evitar sobrescrita de arquivos  
+- 📄 Trabalhar diretamente com `$_FILES`
 
 ---
 
-## 📦 Instalação
+## 📂 Estrutura de Pastas Gerada
 
-Certifique-se de já ter carregado o **autoload do Composer** no seu projeto:
+```text
+uploads/
+ ├── jpg/
+ ├── png/
+ ├── pdf/
+ └── txt/
+```
 
-```bash
-composer install
+---
 
+## 🧪 Exemplo de Uso
 
+### 1️⃣ Formulário HTML
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -61,50 +78,77 @@ composer install
     <title>Upload de Arquivo</title>
 </head>
 <body>
-    <h2>Enviar Arquivo</h2>
-    <form action="upload.php" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <button type="submit">Enviar</button>
-    </form>
+
+<h2>Enviar Arquivo</h2>
+
+<form action="upload.php" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" required>
+    <button type="submit">Enviar</button>
+</form>
+
 </body>
 </html>
+```
 
+---
 
+### 2️⃣ Script PHP
 
-
+```php
 <?php
 
 require 'vendor/autoload.php';
 
 use WebTools\Upload\Upload;
 
-// Verifica se veio arquivo pelo formulário
 if (!empty($_FILES['file'])) {
 
     $file = $_FILES['file'];
 
-    // Configurações permitidas
-    $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'txt']; // extensões aceitas
-    $maxSize = 5 * 1024 * 1024; // tamanho máximo: 5MB
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'txt'];
+    $maxSize = 5 * 1024 * 1024; // 5MB
 
-    // Inicializa a classe de upload
     $uploader = new Upload(
         $file,
-        "uploads/",           // diretório base
-        $allowedExtensions,   // extensões permitidas
-        $maxSize              // tamanho máximo
+        'uploads/',
+        $allowedExtensions,
+        $maxSize
     );
 
-    // Faz o upload
     if ($uploader->upload()) {
-        echo "<p>Upload realizado com sucesso!</p>";
-        echo "<p>Caminho do arquivo: " . htmlspecialchars($uploader->getUploadedPath()) . "</p>";
+        echo 'Upload realizado com sucesso!<br>';
+        echo 'Arquivo salvo em: ' . htmlspecialchars($uploader->getUploadedPath());
     } else {
-        echo "<p>Erro no upload — verifique extensão e tamanho!</p>";
+        echo 'Erro no upload. Verifique a extensão ou o tamanho do arquivo.';
     }
 
 } else {
-    echo "<p>Nenhum arquivo foi enviado.</p>";
+    echo 'Nenhum arquivo enviado.';
 }
+```
 
+---
 
+## 📌 Recursos Principais
+
+- 📁 Organização automática por extensão  
+- 🔒 Validação de tamanho e tipo de arquivo  
+- 🧩 Código orientado a objetos  
+- 📦 Compatível com Composer  
+- ⚙️ Fácil integração em qualquer projeto PHP  
+
+---
+
+## 🔮 Roadmap
+
+- 🌐 HTTP Client (GET, POST, PUT, DELETE)  
+- 📡 API Request Wrapper  
+- 🛡️ Validação de dados  
+- 🧾 Logger simples  
+- 📁 Download Manager  
+
+---
+
+## 📄 Licença
+
+Licença **MIT**.
