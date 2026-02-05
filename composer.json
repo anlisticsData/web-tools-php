@@ -1,0 +1,42 @@
+{
+    "name": "analistics/web-tools",
+    "description": "Uma coleção de ferramentas web para automação, integração e utilitários em PHP",
+    "type": "library",
+    "keywords": [
+        "php",
+        "web",
+        "tools",
+        "automation",
+        "utilities"
+    ],
+    "homepage": "https://github.com/seu-usuario/web-tools",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Edilson Claudino da Silva",
+            "email": "seu-email@exemplo.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.0"
+    },
+    "require-dev": {
+      
+    },
+    "autoload": {
+        "psr-4": {
+            "WebTools\\": "src/"
+        }
+    },
+    "scripts": {
+       
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "RC",
+    "prefer-stable": true
+}
+
