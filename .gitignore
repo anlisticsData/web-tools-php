@@ -20,3 +20,7 @@
 /fuel/app/cache/*/*
 /fuel/app/config/crypt.php
 vendor/*
+api.php
+index.php
+demo.html
+
