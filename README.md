@@ -1,6 +1,6 @@
 # 📦 Web Tools — PHP
 
-Uma coleção de **ferramentas web em PHP** para facilitar **uploads de arquivos, requisições HTTP e utilitários comuns** usados em aplicações web e scripts.
+Uma coleção de **ferramentas web em PHP** para facilitar **uploads de arquivos, requisições HTTP, CORS e utilitários comuns** usados em aplicações web e APIs.
 
 ---
 
@@ -9,7 +9,8 @@ Uma coleção de **ferramentas web em PHP** para facilitar **uploads de arquivos
 O **Web Tools** é um pacote PHP modular e extensível, criado para agilizar tarefas comuns no desenvolvimento web, oferecendo:
 
 - 📁 Upload de arquivos seguro e organizado  
-- 📡 Ferramentas para requisições HTTP  
+- 🌐 Manipulação de requisições HTTP  
+- 🔐 Configuração simples de CORS  
 - 🧰 Utilitários reutilizáveis  
 - 📦 Integração simples via Composer  
 
@@ -66,76 +67,88 @@ uploads/
 
 ---
 
-## 🧪 Exemplo de Uso
+## 🧪 Exemplo de Upload
 
-### 1️⃣ Formulário HTML
+### Formulário HTML
 
 ```html
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Upload de Arquivo</title>
-</head>
-<body>
-
-<h2>Enviar Arquivo</h2>
-
 <form action="upload.php" method="post" enctype="multipart/form-data">
     <input type="file" name="file" required>
     <button type="submit">Enviar</button>
 </form>
-
-</body>
-</html>
 ```
 
 ---
 
-### 2️⃣ Script PHP
+# 🌐 HTTP Request
+
+Classe utilitária para **unificar dados de requisições HTTP**, suportando:
+
+- GET
+- POST
+- JSON (`php://input`)
+
+Todos os parâmetros são normalizados para **lowercase**.
+
+---
+
+## 🧪 Exemplo de Uso — Request
 
 ```php
 <?php
 
-require 'vendor/autoload.php';
+use WebTools\Http\Request;
 
-use WebTools\Upload\Upload;
+Request::init();
 
-if (!empty($_FILES['file'])) {
+$name  = Request::get('name');
+$email = Request::get('email', 'email@default.com');
 
-    $file = $_FILES['file'];
-
-    $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'txt'];
-    $maxSize = 5 * 1024 * 1024; // 5MB
-
-    $uploader = new Upload(
-        $file,
-        'uploads/',
-        $allowedExtensions,
-        $maxSize
-    );
-
-    if ($uploader->upload()) {
-        echo 'Upload realizado com sucesso!<br>';
-        echo 'Arquivo salvo em: ' . htmlspecialchars($uploader->getUploadedPath());
-    } else {
-        echo 'Erro no upload. Verifique a extensão ou o tamanho do arquivo.';
-    }
-
-} else {
-    echo 'Nenhum arquivo enviado.';
-}
+echo $name;
+echo $email;
 ```
+
+---
+
+# 🔐 CORS
+
+Classe simples para habilitar **CORS (Cross-Origin Resource Sharing)** em APIs PHP.
+
+Ideal para:
+- APIs REST
+- Integrações frontend (React, Vue, Angular)
+- Requisições externas
+
+---
+
+## 🧪 Exemplo de Uso — CORS
+
+```php
+<?php
+
+use WebTools\Http\Cors;
+
+Cors::Init();
+
+// Seu código da API continua aqui
+```
+
+### Headers aplicados automaticamente
+- `Access-Control-Allow-Origin: *`
+- `Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS`
+- `Access-Control-Allow-Headers: Content-Type, Authorization`
+
+Requisições `OPTIONS` retornam **204 (No Content)** automaticamente.
 
 ---
 
 ## 📌 Recursos Principais
 
-- 📁 Organização automática por extensão  
-- 🔒 Validação de tamanho e tipo de arquivo  
-- 🧩 Código orientado a objetos  
-- 📦 Compatível com Composer  
-- ⚙️ Fácil integração em qualquer projeto PHP  
+- 📦 Autoload PSR-4  
+- 📁 Upload organizado por extensão  
+- 🌐 Request unificada (GET, POST, JSON)  
+- 🔐 CORS pronto para APIs  
+- 🧩 Código limpo e orientado a objetos  
 
 ---
 
