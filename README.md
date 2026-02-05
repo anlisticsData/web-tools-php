@@ -1,6 +1,6 @@
 # 📦 Web Tools — PHP
 
-Uma coleção de **ferramentas web em PHP** para facilitar **uploads de arquivos, requisições HTTP, CORS e utilitários comuns** usados em aplicações web e APIs.
+Uma coleção de **ferramentas web em PHP** para facilitar **uploads de arquivos, requisições HTTP, CORS, respostas JSON e utilitários comuns** usados em aplicações web e APIs.
 
 ---
 
@@ -11,6 +11,7 @@ O **Web Tools** é um pacote PHP modular e extensível, criado para agilizar tar
 - 📁 Upload de arquivos seguro e organizado  
 - 🌐 Manipulação de requisições HTTP  
 - 🔐 Configuração simples de CORS  
+- 📤 Respostas JSON padronizadas  
 - 🧰 Utilitários reutilizáveis  
 - 📦 Integração simples via Composer  
 
@@ -55,21 +56,7 @@ Classe responsável por **fazer upload de arquivos**, validando extensão e tama
 
 ---
 
-## 📂 Estrutura de Pastas Gerada
-
-```text
-uploads/
- ├── jpg/
- ├── png/
- ├── pdf/
- └── txt/
-```
-
----
-
 ## 🧪 Exemplo de Upload
-
-### Formulário HTML
 
 ```html
 <form action="upload.php" method="post" enctype="multipart/form-data">
@@ -92,7 +79,7 @@ Todos os parâmetros são normalizados para **lowercase**.
 
 ---
 
-## 🧪 Exemplo de Uso — Request
+## 🧪 Exemplo — Request
 
 ```php
 <?php
@@ -101,11 +88,8 @@ use WebTools\Http\Request;
 
 Request::init();
 
-$name  = Request::get('name');
-$email = Request::get('email', 'email@default.com');
-
-echo $name;
-echo $email;
+$id    = Request::get('id');
+$name  = Request::get('name', 'Usuário');
 ```
 
 ---
@@ -116,12 +100,12 @@ Classe simples para habilitar **CORS (Cross-Origin Resource Sharing)** em APIs P
 
 Ideal para:
 - APIs REST
-- Integrações frontend (React, Vue, Angular)
-- Requisições externas
+- Frontends SPA (React, Vue, Angular)
+- Integrações externas
 
 ---
 
-## 🧪 Exemplo de Uso — CORS
+## 🧪 Exemplo — CORS
 
 ```php
 <?php
@@ -130,15 +114,65 @@ use WebTools\Http\Cors;
 
 Cors::Init();
 
-// Seu código da API continua aqui
+// Continuação da API
 ```
 
-### Headers aplicados automaticamente
+### Headers aplicados
 - `Access-Control-Allow-Origin: *`
 - `Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS`
 - `Access-Control-Allow-Headers: Content-Type, Authorization`
 
-Requisições `OPTIONS` retornam **204 (No Content)** automaticamente.
+Requisições `OPTIONS` retornam **204** automaticamente.
+
+---
+
+# 📤 JSON Output
+
+Classe utilitária para **retornar respostas JSON padronizadas**, definindo status HTTP e tratando erros.
+
+Ideal para APIs REST.
+
+---
+
+## 🧪 Exemplo — Resposta de Sucesso
+
+```php
+<?php
+
+use WebTools\Output\Json;
+
+$data = [
+    'status' => 'success',
+    'data'   => [
+        'id' => 1,
+        'name' => 'João'
+    ]
+];
+
+Json::show($data, 200);
+```
+
+---
+
+## ❌ Exemplo — Resposta de Erro
+
+```php
+<?php
+
+use WebTools\Output\Json;
+
+Json::show(null, 404, 'Recurso não encontrado');
+```
+
+### Estrutura de erro retornada
+```json
+{
+  "error": {
+    "message": "Recurso não encontrado",
+    "code": 404
+  }
+}
+```
 
 ---
 
@@ -148,6 +182,7 @@ Requisições `OPTIONS` retornam **204 (No Content)** automaticamente.
 - 📁 Upload organizado por extensão  
 - 🌐 Request unificada (GET, POST, JSON)  
 - 🔐 CORS pronto para APIs  
+- 📤 JSON padronizado com status HTTP  
 - 🧩 Código limpo e orientado a objetos  
 
 ---
