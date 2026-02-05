@@ -26,7 +26,6 @@ class Request
         return self::$buffer;
     }
 
-
     private static function setBuffer(array $inputs): void
     {
         foreach ($inputs as $key => $input) {
